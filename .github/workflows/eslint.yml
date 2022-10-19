@@ -4,8 +4,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install modules
-        run: yarn
-      - name: Run ESLint
+      - uses: actions/checkout@v3
+      - name: Setup Node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+        run: npm init @eslint/config
+      - name: Lint
         run: eslint . --ext .js,.jsx,.ts,.tsx
