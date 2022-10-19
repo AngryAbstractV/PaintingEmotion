@@ -9,6 +9,7 @@ jobs:
         with:
           node-version: '14'
       - name: Install ESLint
+        run: npm init
         run: npm init @eslint/config
       - name: Lint
         run: eslint . --ext .js,.jsx,.ts,.tsx
