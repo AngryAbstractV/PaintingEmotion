@@ -27,7 +27,7 @@ def genNeighborhoodHistogram(neighborhoodMatrix):
 # partition histogram array into c and I\c 
 # determine value (count) of maximum, and index of location
 
-def calcPixelHarmony(neighborhoodHistogram):
+def calcPixelHarmony(neighborhoodHistogram, dimension):
     modes = [[0,0],[0,0]]
     #find the maxima and minima
     maxima = argrelextrema(np.array(neighborhoodHistogram), np.greater, mode= 'wrap')
@@ -36,11 +36,13 @@ def calcPixelHarmony(neighborhoodHistogram):
     modes[0][1] = max(neighborhoodHistogram)
     modes[0][0] = neighborhoodHistogram.index(modes[0][1])
     for i in maxima[0]:
+        if i == modes[0][0]:
+            continue
         secondMaxValue = neighborhoodHistogram[i]
         if secondMaxValue > modes[1][1]:
             modes[1][0], modes[1][1] = i, secondMaxValue
 
-    return calcModeHarmony(modes)
+    return calcModeHarmony(modes, dimension)
 """
 # calc max modes OPT 2
 # consider all possible values of c (splitting histogram in all possible ways?)
@@ -69,7 +71,15 @@ def calcPixelHarmony(neighborhoodHistogram):
 #calculate the individual pixel harmony based on a tuple of the two max modes 
 #modes[colorcatagory, quantity]
 def calcModeHarmony(modes):
-    pixelHarmony = math.exp(-abs(modes[0][1] - modes[1][1])) * abs(modes[0][0] - modes[1][0])
+    # checks if only 1 maxima was returned
+    if modes[1][1] == 0:
+        index_diff = 4
+        value_diff = 0
+    else: 
+        index_diff = min((abs(modes[0][0] - modes[1][0])), 8 - (abs(modes[0][0] - modes[1][0])))
+        value_diff = -abs(modes[0][1] - modes[1][1])
+        #value_diff = (-abs(modes[0][1] - modes[1][1])) * ((modes[0][1] + modes[1][1]) / (dimension ** 2))
+    pixelHarmony = math.exp(value_diff) * index_diff
     return pixelHarmony
 
 #main function / driver of harmony calculation
@@ -90,7 +100,10 @@ def calcHarmony(hsvImg):
             # pull out submatrix surrounding anchor
             neighMatrix = hsvImg[(x - xy_init):(x + xy_init) + 1, (y - xy_init):(y + xy_init) + 1]
             histogram = genNeighborhoodHistogram(neighMatrix)
-            totalHarmony += calcPixelHarmony(histogram)
+            totalHarmony += calcPixelHarmony(histogram, neighborhood_dimension)
+    
+    scalingValue = ((img_len - (xy_init * 2)) * (img_wid - (xy_init * 2))) * 4
+    totalHarmony = totalHarmony / scalingValue
 
     return totalHarmony
 
