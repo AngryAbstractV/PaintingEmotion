@@ -7,9 +7,6 @@ from harmony import calcHarmony
 #from gradation import calcGradation
 #from movement import calcMovement
 
-img_size_x = 300
-img_size_y = 300
-
 class Painting: 
 
     # init method or constructor
@@ -32,9 +29,30 @@ class Painting:
             #SATURATION = 0 - 255
             #VALUE = 0 - 255
 
-        #TODO: any additional preprocessing? scaling?
-        self.hsv_img = cv2.resize(self.hsv_img, (img_size_x, img_size_y))
-        #maybe try to scale it proportionally?
+        # Scale image, preserving aspect ratio
+        pix_threshold = 500
+        img_wid = self.hsv_img.shape[1]
+        img_len = self.hsv_img.shape[0]
+        new_wid = 0
+        new_len = 0
+
+        if img_wid > pix_threshold or img_len > pix_threshold:
+            # find out which is bigger
+            if img_wid > img_len:
+                new_wid = pix_threshold
+                scale = (new_wid * 100) // img_wid
+                new_len = (img_len * scale) // 100
+            elif img_len > img_wid:
+                new_len = pix_threshold
+                scale = (new_len * 100) // img_len
+                new_wid = (img_wid * scale) // 100
+            else:
+                # wid and len are equal
+                new_wid = pix_threshold
+                new_len = pix_threshold
+
+        dim = (new_wid, new_len)
+        self.hsv_img = cv2.resize(self.hsv_img, dim, interpolation=cv2.INTER_AREA)
 
         print("preprocessing complete")
         return
