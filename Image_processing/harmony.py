@@ -18,12 +18,11 @@ def genNeighborhoodHistogram(neighborhoodMatrix, setting='hue'):
 
             # grab first number in tuple at (x, y) which is the hue, determine which 'bucket' it belongs to
             if setting == 'hue':
-                val = int(neighborhoodMatrix[x,y,0].tolist() // 22.5)
-                #val2 = int(neighborhoodMatrix[x][y][0] // 22.5)
+                val = int(neighborhoodMatrix.item((x, y, 0)) // 22.5)
             elif setting == 'saturation':
-                val = int(neighborhoodMatrix[x,y,1].tolist() // 32)
+                val = int(neighborhoodMatrix.item((x, y, 1)) // 32)
             elif setting == "value":
-                val = int(neighborhoodMatrix[x,y,2].tolist() // 32)
+                val = int(neighborhoodMatrix.item((x, y, 2)) // 32)
 
             # increment count for bucket
             neighborhoodHistogram[val] += 1
