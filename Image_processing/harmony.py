@@ -9,16 +9,24 @@ from scipy.signal import argrelextrema
 
 #TODO: Does this need to be generalized? right now it is specific to hue
 #if so the '22.5' needs to be changed to the range of the new metric / 8
-def genNeighborhoodHistogram(neighborhoodMatrix):
+def genNeighborhoodHistogram(neighborhoodMatrix, setting='hue'):
     neighborhoodHistogram = [0]*8
     shape = neighborhoodMatrix.shape
     # for each pixel in neighborhood:
     for x in range(shape[0]):
         for y in range(shape[1]):
+
             # grab first number in tuple at (x, y) which is the hue, determine which 'bucket' it belongs to
-            hue = int(neighborhoodMatrix[x,y,0].tolist() // 22.5)
+            if setting == 'hue':
+                val = int(neighborhoodMatrix[x,y,0].tolist() // 22.5)
+                #val2 = int(neighborhoodMatrix[x][y][0] // 22.5)
+            elif setting == 'saturation':
+                val = int(neighborhoodMatrix[x,y,1].tolist() // 32)
+            elif setting == "value":
+                val = int(neighborhoodMatrix[x,y,2].tolist() // 32)
+
             # increment count for bucket
-            neighborhoodHistogram[hue] += 1
+            neighborhoodHistogram[val] += 1
     return neighborhoodHistogram
 
 # calc max modes OPT 1
@@ -27,7 +35,7 @@ def genNeighborhoodHistogram(neighborhoodMatrix):
 # partition histogram array into c and I\c 
 # determine value (count) of maximum, and index of location
 
-def calcPixelHarmony(neighborhoodHistogram, dimension):
+def calcPixelHarmony(neighborhoodHistogram):
     modes = [[0,0],[0,0]]
     #find the maxima and minima
     maxima = argrelextrema(np.array(neighborhoodHistogram), np.greater, mode= 'wrap')
@@ -42,7 +50,7 @@ def calcPixelHarmony(neighborhoodHistogram, dimension):
         if secondMaxValue > modes[1][1]:
             modes[1][0], modes[1][1] = i, secondMaxValue
 
-    return calcModeHarmony(modes, dimension)
+    return calcModeHarmony(modes)
 """
 # calc max modes OPT 2
 # consider all possible values of c (splitting histogram in all possible ways?)
@@ -88,6 +96,9 @@ def calcHarmony(hsvImg):
     totalHarmony = 0
     neighborhood_dimension = 9 #grid must be odd!!
     xy_init = neighborhood_dimension // 2 # 4
+    hueval = 0
+    satval = 0
+    valval = 0
 
     img_wid = hsvImg.shape[1] # left to right
     img_len = hsvImg.shape[0] # up to down
@@ -99,8 +110,17 @@ def calcHarmony(hsvImg):
         for y in range(xy_init, (img_wid - xy_init)):
             # pull out submatrix surrounding anchor
             neighMatrix = hsvImg[(x - xy_init):(x + xy_init) + 1, (y - xy_init):(y + xy_init) + 1]
-            histogram = genNeighborhoodHistogram(neighMatrix)
-            totalHarmony += calcPixelHarmony(histogram, neighborhood_dimension)
+
+            histogram = genNeighborhoodHistogram(neighMatrix, setting='hue')
+            hueval += calcPixelHarmony(histogram)
+
+            histogram = genNeighborhoodHistogram(neighMatrix, setting='saturation')
+            satval += calcPixelHarmony(histogram)
+
+            histogram = genNeighborhoodHistogram(neighMatrix, setting='value')
+            valval += calcPixelHarmony(histogram)
+        
+    totalHarmony = (hueval + satval + valval) / 3
     
     scalingValue = ((img_len - (xy_init * 2)) * (img_wid - (xy_init * 2))) * 4
     totalHarmony = totalHarmony / scalingValue
