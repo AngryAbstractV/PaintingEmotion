@@ -1,3 +1,21 @@
+import cv2
+# NOTE: opencv must be installed with the 'contrib' extra modules installed.
+# > pip install opencv-python
+# > pip install opencv-contrib-python
+
+def genSaliencyMap(image):
+    # returns an image that is the saliency map
+    # https://pyimagesearch.com/2018/07/16/opencv-saliency-detection/
+    saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+    (success, saliencyMap) = saliency.computeSaliency(image)
+    saliencyMap = (saliencyMap * 255).astype("uint8")
+
+    # different mode of calculating saliency (I think I like this one more)
+    #saliency = cv2.saliency.StaticSaliencyFineGrained_create()
+    #(success, saliencyMap) = saliency.computeSaliency(image)
+
+    return saliencyMap
+
 def saliency(x_pos, y_pos):
     #probably needs it's own whole class since it's a complex series of equations
     return 
