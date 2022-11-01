@@ -37,11 +37,17 @@ testPaintingAddresses = [
 
 class TestVariety(unittest.TestCase):
 
+    def test_gen_saliency_map(self):
+        return
+
+    def test_gen_mask(self):
+        return
+    
     def test_rfa(self):
         return
     
-    def test_itten_color(self):
-        return
+    #def test_itten_color(self):
+     #   return
 
     def test_calc_emphasis(self):
         for painting in testPaintingAddresses:
