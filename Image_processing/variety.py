@@ -17,9 +17,9 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt 
 
-file = "Untitled-3.png"
-img = cv.imread(file)
-img = img_lab = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+#file = "Untitled-3.png"
+#img = cv.imread(file)
+#img = img_lab = cv.cvtColor(img, cv.COLOR_BGR2HSV)
 
 """Black, Green, Blue, Orange, Purple, White, Pink, Gray, Yellow, Red, Brown
 
@@ -132,8 +132,8 @@ def color_check(pixel):
 """
 
 #cv.calcHist([img],[0],None,[256],[0,256])
-plt.hist(img.ravel(),11,[0,256],histtype='stepfilled')
-plt.show()
+#plt.hist(img.ravel(),11,[0,256],histtype='stepfilled')
+#plt.show()
 ''''bar', 'barstacked', 'step', 'stepfilled'''''
 
 def get_hist(img):
@@ -156,7 +156,7 @@ hist = get_hist(img_lab)
 
 plt.bar(range(len(hist)), hist)"""
 
-from google.colab.patches import cv2_imshow
+#from google.colab.patches import cv2_imshow
 
 '''l_a_b = img_lab.reshape((img_lab.shape[0]*img_lab.shape[1],3))
 a_b = l_a_b[:,1:]
@@ -221,7 +221,7 @@ def calcScore(count, total):
 Main function for the driver to use.
 """
 def calcVariety(img):
-    img = cv.cvtColor(img, cv.COLOR_HSV2RGB)
+    #img = cv.cvtColor(img, cv.COLOR_HSV2RGB)
     count = get_hist(img)
     total = np.sum(count)
     return calcScore(count, total)
@@ -229,4 +229,4 @@ def calcVariety(img):
 """
 Block for testing
 """
-print(calcVariety(img))
+#print(calcVariety(img))

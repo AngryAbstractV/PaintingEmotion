@@ -1,6 +1,8 @@
 #test cases for image processing driver
 import unittest
-from painting import Painting
+import sys
+sys.path.append('../Image_processing')
+from Image_processing.painting import Painting
 import numpy as np
 
 testEmpty3DNumpyArray = np.zeros((1,1,1), dtype=np.int32)
