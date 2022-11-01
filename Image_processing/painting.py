@@ -77,7 +77,7 @@ class Painting:
         # call harmony
         self.properties_list[2] = calcHarmony(self.hsv_img)
 
-        # call variety
+        #call variety
         self.properties_list[3] = calcVariety(self.hsv_img)
 
         #call gradation
