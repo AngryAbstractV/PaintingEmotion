@@ -9,23 +9,191 @@ Original file is located at
 
 '''
 @author Sinh Mai and Thu Thach
-@version 1.5
-@date 11/2/2022
+@version 1.4
+@date 10/19/2022
 '''
 
 import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt 
 
+#file = "Untitled-3.png"
+#img = cv.imread(file)
+#img = img_lab = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+
+"""Black, Green, Blue, Orange, Purple, White, Pink, Gray, Yellow, Red, Brown
+
+HSV
+
+Red falls between 0 and 60 degrees.
+
+Yellow falls between 61 and 120 degrees.
+
+Green falls between 121 and 180 degrees.
+
+Cyan falls between 181 and 240 degrees.
+
+Blue falls between 241 and 300 degrees.
+
+Magenta falls between 301 and 360 degrees.
+
+Black falls between 0 and 360 degrees, and has a low value
+
+White falls between 0 and 360 degrees, and has a high value with low saturation
+
+Function supporting code for color identification.
+Was not optimal as it assumed that the ranges were proven to be that specific color.
+Also, the method of identifying each color was not optimal.
+
+black_low = np.array([0, 0, 0])
+black_high = np.array([180, 255, 30])
+white_low = np.array([0, 0, 231])
+white_high = np.array([180, 18, 255])
+grey_low = np.array([0, 0, 40])
+grey_high = np.array([180, 18, 230])
+green_low = np.array([36, 50, 70])
+green_high = np.array([89, 255, 255])
+yellow_low = np.array([25, 50, 70])
+yellow_high = np.array([35, 255, 255])
+orange_low = np.array([10, 50, 70])
+orange_high = np.array([24, 255, 255])
+pink_low = [-1,-1,-1]
+pink_high = [-1,-1,-1]
+purple_low = np.array([129, 50, 70])
+purple_high = np.array([158, 255, 255])
+red_low = np.array([159, 50, 70])
+red_high = np.array([180, 255, 255])
+blue_low = np.array([90, 50, 70])
+blue_high = np.array([128, 255, 255])
+brown_low = np.array([10, 100, 20])
+brown_high = np.array([20, 255, 200])
+
+ct_black = 0
+ct_green = 1
+ct_yellow = 2
+ct_orange = 3
+ct_pink = 4
+ct_purple = 5
+ct_white= 6
+ct_grey = 7
+ct_red = 8
+ct_blue = 9
+ct_brown = 10
+
+def color_check(pixel):
+    
+    color = -1
+    
+    if ((black_low[0] < pixel[0] < black_high[0]) & 
+        (black_low[1] < pixel[1] < black_high[1]) & 
+        (black_low[2] < pixel[2] < black_high[2])):
+            color = ct_black
+    elif ((white_low[0] < pixel[0] < white_high[0]) & 
+          (white_low[1] < pixel[1] < white_high[1]) & 
+          (white_low[2] < pixel[2] < white_high[2])):
+            color = ct_white
+    elif ((grey_low[0] < pixel[0] < grey_high[0]) & 
+          (grey_low[1] < pixel[1] < grey_high[1]) & 
+          (grey_low[2] < pixel[2] < grey_high[2])):
+            color = ct_grey 
+    elif ((green_low[0] < pixel[0] < green_high[0]) & 
+          (green_low[1] < pixel[1] < green_high[1]) & 
+          (green_low[2] < pixel[2] < green_high[2])):
+            color = ct_green
+    elif ((yellow_low[0] < pixel[0] < yellow_high[0]) & 
+          (yellow_low[1] < pixel[1] < yellow_high[1]) & 
+          (yellow_low[2] < pixel[2] < yellow_high[2])):
+            color = ct_yellow
+    elif ((orange_low[0] < pixel[0] < orange_high[0]) &
+          (orange_low[1] < pixel[1] < orange_high[1]) &
+          (orange_low[2] < pixel[2] < orange_high[2])):
+            color = ct_orange
+    elif ((purple_low[0] < pixel[0] < purple_high[0]) & 
+          (purple_low[1] < pixel[1] < purple_high[1]) & 
+          (purple_low[2] < pixel[2] < purple_high[2])):
+            color = ct_purple
+    elif ((red_low[0] < pixel[0] < red_high[0]) &
+          (red_low[1] < pixel[1] < red_high[1]) & 
+          (red_low[2] < pixel[2] < red_high[2])):
+            color = ct_red
+    elif ((blue_low[0] < pixel[0] < blue_high[0]) &
+          (blue_low[1] < pixel[1] < blue_high[1]) & 
+          (blue_low[2] < pixel[2] < blue_high[2])):
+            color = ct_blue
+    elif ((pink_low[0] < pixel[0] < pink_high[0]) & 
+          (pink_low[1] < pixel[1] < pink_high[1]) & 
+          (pink_low[2] < pixel[2] < pink_high[2])):
+            color = ct_pink
+    elif ((brown_low[0] < pixel[0] < brown_high[0]) &
+          (brown_low[1] < pixel[1] < brown_high[1]) &
+          (brown_low[2] < pixel[2] < brown_high[2])):
+            color = ct_brown
+    return color
 """
-Counts and sorts pixels based on RGB colors.
-Returns an array that contains the counts of each color.
-"""
+
+#cv.calcHist([img],[0],None,[256],[0,256])
+#plt.hist(img.ravel(),11,[0,256],histtype='stepfilled')
+#plt.show()
+''''bar', 'barstacked', 'step', 'stepfilled'''''
 
 def get_hist(img):
   counts, bins = np.histogram(img,bins=11)
   return counts
 
+'''def q_hist(quadrant):
+  counts, bins = np.histogram(quadrant)
+  counts = counts / cal_rml(counts)
+  return counts'''
+
+'''def cal_rml(counts):
+  std = np.std(counts)
+  mean = np.mean(counts)
+  return mean + 5*std'''
+
+"""img_lab = cv.cvtColor(img, cv.COLOR_HSV2RGB)
+
+hist = get_hist(img_lab)
+
+plt.bar(range(len(hist)), hist)"""
+
+#from google.colab.patches import cv2_imshow
+
+'''l_a_b = img_lab.reshape((img_lab.shape[0]*img_lab.shape[1],3))
+a_b = l_a_b[:,1:]
+a_right = a_b[a_b[:,0] >= 128]
+a_left = a_b[a_b[:,0] < 128]
+
+a_right_b_top = a_right[a_right[:,1] >= 128]
+a_right_b_bottom = a_right[a_right[:,1] < 128]
+
+a_left_b_top = a_left[a_left[:,1] >= 128]
+a_left_b_bottom = a_left[a_left[:,1] < 128]
+
+#a_right_b_top_1 = a_right_b_top[a_right_b_top[:0] < a_right_b_top[:1]]
+
+quadrants = [a_right_b_top,a_right_b_bottom,a_left_b_top,a_left_b_bottom]
+for i in range(len(quadrants)):
+  quadrants[i] = q_hist(quadrants[i])
+  print(quadrants[i])
+
+print(a_right_b_top.size,a_right_b_bottom.size,a_left_b_top.size,a_left_b_bottom.size)
+plt.bar(range(len(quadrants[0])), quadrants[0])'''
+
+"""
+Depreciated method to detect and count colors of each pixel
+
+def countColors(img):
+    count = np.zeros((13))
+    col = 11
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            pixel = img[i][j]
+            col = color_check(pixel)
+            count[col] += 1
+            count[12] += 1
+    return count 
+
+"""
 
 """
 Calculate a value to send to ML model
@@ -57,3 +225,8 @@ def calcVariety(img):
     count = get_hist(img)
     total = np.sum(count)
     return calcScore(count, total)
+
+"""
+Block for testing
+"""
+#print(calcVariety(img))
