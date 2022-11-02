@@ -19,7 +19,7 @@ Must have Python installed
 
   pip install -r requirements.txt
 
-###Mac/Linux Instruction for Environment-
+### Mac/Linux Instruction for Environment-
 
   pip install virtualenv
 
