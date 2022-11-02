@@ -1,14 +1,16 @@
-#harmony calculation: written initially by Nicole and Lettie
+# harmony calculation: written initially by Nicole and Lettie
 import math
 import numpy as np
 from scipy.signal import argrelextrema
 
-#HUE = 0 - 180 (179?)
-#SATURATION = 0 - 255
-#VALUE = 0 - 255
+# HUE = 0 - 180 (179?)
+# SATURATION = 0 - 255
+# VALUE = 0 - 255
 
-#TODO: Does this need to be generalized? right now it is specific to hue
-#if so the '22.5' needs to be changed to the range of the new metric / 8
+# TODO: Does this need to be generalized? right now it is specific to hue
+# if so the '22.5' needs to be changed to the range of the new metric / 8
+
+
 def genNeighborhoodHistogram(neighborhoodMatrix, setting='hue'):
     neighborhoodHistogram = [0]*8
     shape = neighborhoodMatrix.shape
@@ -31,15 +33,16 @@ def genNeighborhoodHistogram(neighborhoodMatrix, setting='hue'):
 # calc max modes OPT 1
 # check edge cases for histogram
 # calculate local maxima and minima
-# partition histogram array into c and I\c 
+# partition histogram array into c and I\c
 # determine value (count) of maximum, and index of location
 
+
 def calcPixelHarmony(neighborhoodHistogram):
-    modes = [[0,0],[0,0]]
-    #find the maxima and minima
+    modes = [[0, 0],[0, 0]]
+    # find the maxima and minima
     maxima = argrelextrema(np.array(neighborhoodHistogram), np.greater, mode= 'wrap')
-    #print(maxima)
-    #minima = argrelextrema(neighborhoodHistogram, np.less)
+    # print(maxima)
+    # minima = argrelextrema(neighborhoodHistogram, np.less)
     modes[0][1] = max(neighborhoodHistogram)
     modes[0][0] = neighborhoodHistogram.index(modes[0][1])
     for i in maxima[0]:
@@ -75,8 +78,10 @@ def calcPixelHarmony(neighborhoodHistogram):
     return minHarmony
 """
 
-#calculate the individual pixel harmony based on a tuple of the two max modes 
-#modes[colorcatagory, quantity]
+# calculate the individual pixel harmony based on a tuple of the two max modes
+# modes[colorcatagory, quantity]
+
+
 def calcModeHarmony(modes):
     # checks if only 1 maxima was returned
     if modes[1][1] == 0:
@@ -85,15 +90,17 @@ def calcModeHarmony(modes):
     else: 
         index_diff = min((abs(modes[0][0] - modes[1][0])), 8 - (abs(modes[0][0] - modes[1][0])))
         value_diff = -abs(modes[0][1] - modes[1][1])
-        #value_diff = (-abs(modes[0][1] - modes[1][1])) * ((modes[0][1] + modes[1][1]) / (dimension ** 2))
+        # value_diff = (-abs(modes[0][1] - modes[1][1])) * ((modes[0][1] + modes[1][1]) / (dimension ** 2))
     pixelHarmony = math.exp(value_diff) * index_diff
     return pixelHarmony
 
-#main function / driver of harmony calculation
+# main function / driver of harmony calculation
+
+
 def calcHarmony(hsvImg):
     # sum of each pixel's harmony intensity
     totalHarmony = 0
-    neighborhood_dimension = 9 #grid must be odd!!
+    neighborhood_dimension = 9 # grid must be odd!!
     xy_init = neighborhood_dimension // 2 # 4
     hueval = 0
     satval = 0
@@ -104,7 +111,7 @@ def calcHarmony(hsvImg):
 
 
     # anchor coords represented by x, y. x goes lengthwise, y goes widthwise
-    for x in range(xy_init, (img_len - xy_init)):  #img_len - xy_init should be 4 less than the end of line
+    for x in range(xy_init, (img_len - xy_init)):  # img_len - xy_init should be 4 less than the end of line
 
         for y in range(xy_init, (img_wid - xy_init)):
             # pull out submatrix surrounding anchor
@@ -125,6 +132,3 @@ def calcHarmony(hsvImg):
     totalHarmony = totalHarmony / scalingValue
 
     return totalHarmony
-
-
-

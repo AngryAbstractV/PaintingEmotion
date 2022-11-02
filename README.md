@@ -1,7 +1,10 @@
 # PaintingEmotion
-Command Line Application to Detect Painting Emotions
+### Website
+Link: https://emotion-analyzer-5000.netlify.app/
 
-system requirements: make sure you have these installed on your computer:
+### Command-line Application to Detect Painting Emotions
+
+System Requirements: make sure you have these installed on your computer:
 
     python or python 3
         but you should probably have python3 my friend. all these instructions will assume python 3. generally replace the command python3 with python if you don't have python3
@@ -26,11 +29,10 @@ system requirements: make sure you have these installed on your computer:
     OpenCV
         https://pypi.org/project/opencv-python/
 
-instructions:
+Instructions:
 
     1) navigate to the location of the folder PaintingEmotion in your terminal
         on my computer the command line prompt will look like this:
         yourname:~/path/PaintingEmotion$
     2) then enter python3 Main.py to run the application
     3) follow the instructions on the screen
-    
