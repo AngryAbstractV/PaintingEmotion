@@ -1,36 +1,31 @@
-# PaintingEmotion
-Command Line Application to Detect Painting Emotions
+# paintingEmotion:
+(if you want to run individual image processing files or tests on your local)
 
-system requirements: make sure you have these installed on your computer:
+Must have Python installed
 
-    python or python 3
-        but you should probably have python3 my friend. all these instructions will assume python 3. generally replace the command python3 with python if you don't have python3
+## step 1: clone repo
 
-    tkinter
-        check if you have it installed already with: python3 -m tkinter
-        https://www.geeksforgeeks.org/how-to-install-tkinter-on-linux/
+## step 2: navigate to repo
 
-    Pillow
-        check if you have it installed already with: python3 -m pip show pillow
-        https://www.geeksforgeeks.org/how-to-install-pillow-on-linux/
+## step 3: OS specific instructions
 
-    TensorFlow
-        https://www.tensorflow.org/install
+### Windows Instruction for Environment-
 
-    NumPy
-        https://numpy.org/install/
+  pip install virtualenv
 
-    SciPy
-        https://scipy.org/install/
+  virtualenv myenv
 
-    OpenCV
-        https://pypi.org/project/opencv-python/
+  myenv\Scripts\activate
 
-instructions:
+  pip install -r requirements.txt
 
-    1) navigate to the location of the folder PaintingEmotion in your terminal
-        on my computer the command line prompt will look like this:
-        yourname:~/path/PaintingEmotion$
-    2) then enter python3 Main.py to run the application
-    3) follow the instructions on the screen
+###Mac/Linux Instruction for Environment-
+
+  pip install virtualenv
+
+  virtualenv myenv
+
+  source myenv/bin/activate
+  
+  pip install -r requirements.txt
     
