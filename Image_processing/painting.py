@@ -3,7 +3,7 @@ import numpy as np
 #from balance import calcBalance
 #from emphasis import calcEmphasis
 from harmony import calcHarmony
-#from variety import calcVariety
+from variety import calcVariety
 #from gradation import calcGradation
 #from movement import calcMovement
 
@@ -73,7 +73,7 @@ class Painting:
         self.properties_list[2] = calcHarmony(self.hsv_img)
 
         #call variety
-        #self.properties_list[3] = calcVariety(self.hsv_img)
+        self.properties_list[3] = calcVariety(self.hsv_img)
 
         #call gradation
         #self.properties_list[4] = calcGradation(self.hsv_img)
