@@ -69,6 +69,9 @@ def rfa(image_matrix):
 
     # currently only returns result of circular mask, need to figure out how we want to combine these
     # if image is a solid color, divide by zero
+    if sum_saliency == 0:
+        return 0
+        
     return (sum_saliency_cir / sum_saliency)
 
 def itten_color(image_matrix, eq_type):
