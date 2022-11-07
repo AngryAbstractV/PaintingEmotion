@@ -53,8 +53,8 @@ class Painting:
                 new_wid = pix_threshold
                 new_len = pix_threshold
 
-        dim = (img_wid, img_len)
-        self.hsv_img = cv2.resize(self.hsv_img, dim, interpolation=cv2.INTER_AREA)  # TODO new dimensions are zero
+            dim = (new_wid, new_len)
+            self.hsv_img = cv2.resize(self.hsv_img, dim, interpolation=cv2.INTER_AREA)
 
         print("preprocessing complete")
         return
