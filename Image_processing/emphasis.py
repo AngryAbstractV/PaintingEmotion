@@ -60,14 +60,15 @@ def rfa(image_matrix):
     rl_sal = saliency * masks[1]
     cir_sal = saliency * masks[2]
 
-    for x in image_matrix.shape[0]:
-        for y in image_matrix.shape[1]:
+    for x in range(image_matrix.shape[0]):
+        for y in range(image_matrix.shape[1]):
             sum_saliency += saliency.item((x, y))
             sum_saliency_lr += lr_sal.item((x, y))
             sum_saliency_rl += rl_sal.item((x, y))
             sum_saliency_cir += cir_sal.item((x, y))
 
     # currently only returns result of circular mask, need to figure out how we want to combine these
+    # if image is a solid color, divide by zero
     return (sum_saliency_cir / sum_saliency)
 
 def itten_color(image_matrix, eq_type):
