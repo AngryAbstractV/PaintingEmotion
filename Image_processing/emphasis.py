@@ -22,7 +22,7 @@ def itten_color(image_matrix, eq_type):
     itten_color_scores = []
     return itten_color_scores
 
-def emphasis(image_matrix):
+def calcEmphasis(image_matrix):
     #do we need to do anything to the image first?
 
     #calculate itten color scores
