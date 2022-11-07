@@ -9,16 +9,10 @@ def genSaliencyMap(image):
     # returns an image that is the saliency map
     # https://pyimagesearch.com/2018/07/16/opencv-saliency-detection/
 
-    # Spectral Residual mode
-    # saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
-    # (success, saliencyMap) = saliency.computeSaliency(image)
-    # saliencyMap = (saliencyMap * 255).astype("uint8")
-
-    # Fine Grained mode
     saliency = cv2.saliency.StaticSaliencyFineGrained_create()
     (success, saliencyMap) = saliency.computeSaliency(image)
-
     return saliencyMap
+
 
 def genMask(image):
     #enumerate different mask equations
@@ -67,12 +61,12 @@ def rfa(image_matrix):
             sum_saliency_rl += rl_sal.item((x, y))
             sum_saliency_cir += cir_sal.item((x, y))
 
-    # currently only returns result of circular mask, need to figure out how we want to combine these
-    # if image is a solid color, divide by zero
     if sum_saliency == 0:
         return 0
+
+    max_sal = max(sum_saliency_cir, sum_saliency_lr, sum_saliency_rl)
         
-    return (sum_saliency_cir / sum_saliency)
+    return (max_sal / sum_saliency)
 
 def itten_color(image_matrix, eq_type):
     #various itten eqs
@@ -80,7 +74,7 @@ def itten_color(image_matrix, eq_type):
     itten_color_scores = []
     return itten_color_scores
 
-def emphasis(image_matrix):
+def calcEmphasis(image_matrix):
     #do we need to do anything to the image first?
 
     #calculate itten color scores

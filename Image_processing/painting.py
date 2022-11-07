@@ -69,7 +69,7 @@ class Painting:
         # self.properties_list[0] = calcBalance(self.hsv_img)
 
         # call emphasis
-        # self.properties_list[1] = calcEmphasis(self.hsv_img)
+        # self.properties_list[1] = calcEmphasis(self.img)
 
         # call harmony
         self.properties_list[2] = calcHarmony(self.hsv_img)
