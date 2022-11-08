@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 
@@ -18,24 +20,53 @@ def calc_pixel_change(matrix):
     horizontal_score = 0
     for i in range(x):
         horizontal_score += np.abs(np.diff(matrix[i, i, :], n=x - 1))[0]  # Don't ask me what this does
-        vertical_score += np.abs(np.diff(matrix[:, i, i], n=y - 1))[0]    # I will cry if you do
+        vertical_score += np.abs(np.diff(matrix[:, i, i], n=y - 1))[0]  # I will cry if you do
     return vertical_score, horizontal_score
 
 
 def gradation_score(image, kernel):
-    m, n = kernel.shape  # 3x3 matrix of 1s
-    y, x, z = image.shape  # Taking Image shape, z is required, not used
-    finalVert = 0
-    finalHoriz = 0
+    m, n = kernel.shape
+    y, x, z = image.shape
+    horizontal_score = 0
+    vertical_score = 0
     # Iteration of all pixels in the image
     # Loops are in range to not fall out of bounds
+    optimized = time.time()
     for i in range(y - n + 1):
         for j in range(x - n + 1):
-            current_matrix = kernel * (image[i:i + m, j:j + n])  # Copy current pixels onto 3x3 matrix
-            vertical_score, horizontal_score = calc_pixel_change(current_matrix)
-            finalVert += vertical_score
-            finalHoriz += horizontal_score
-    return (finalVert // y) + (finalHoriz // x)  # Dividing by size to make it a smaller score
+            if j % 3 == 0 and i % 3 == 0:
+                current_matrix = kernel * (image[i:i + m, j:j + n])  # Copy current pixels onto 3x3 matrix
+                horizontal_score += np.abs(np.diff(current_matrix[0, 0, :], n=2))[0]
+                vertical_score += np.abs(np.diff(current_matrix[:, 0, 0], n=2))[0]
+                horizontal_score += np.abs(np.diff(current_matrix[1, 1, :], n=2))[0]
+                vertical_score += np.abs(np.diff(current_matrix[:, 1, 1], n=2))[0]
+                horizontal_score += np.abs(np.diff(current_matrix[2, 2, :], n=2))[0]
+                vertical_score += np.abs(np.diff(current_matrix[:, 2, 2], n=2))[0]
+    print(time.time() - optimized)
+    print(vertical_score)
+    print(horizontal_score)
+    # newTotal = vertical_score + horizontal_score
+    # vertical_score = 0
+    # horizontal_score = 0
+
+    # old = time.time()
+    # for i in range(y - n + 1):
+    #    for j in range(x - n + 1):
+    #        current_matrix = kernel * (image[i:i + m, j:j + n])  # Copy current pixels onto 3x3 matrix
+    #        horizontal_score += np.abs(np.diff(current_matrix[0, 0, :], n=2))[0]
+    #        vertical_score += np.abs(np.diff(current_matrix[:, 0, 0], n=2))[0]
+    #        horizontal_score += np.abs(np.diff(current_matrix[1, 1, :], n=2))[0]
+    #        vertical_score += np.abs(np.diff(current_matrix[:, 1, 1], n=2))[0]
+    #        horizontal_score += np.abs(np.diff(current_matrix[2, 2, :], n=2))[0]
+    #        vertical_score += np.abs(np.diff(current_matrix[:, 2, 2], n=2))[0]
+
+    # print(time.time() - old)
+    # print(vertical_score)
+    # print(horizontal_score)
+    # oldTotal = vertical_score + horizontal_score
+    # print(np.diff([newTotal, oldTotal]))
+
+    return (vertical_score // (x * y)) + (horizontal_score // (x * y))  # Dividing by size to make it a smaller score
 
 
 def calcGradation(hsvImg):
