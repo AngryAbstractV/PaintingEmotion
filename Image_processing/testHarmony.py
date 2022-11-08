@@ -5,24 +5,24 @@ from harmony import calcHarmony, calcModeHarmony, calcPixelHarmony, genNeighborh
 from painting import Painting
 import numpy as np
 
-"""
+
 #all test paintings in initial order. this order will change if we change the harmony calculation
 #if you run these remove the 'assert greater' statements in test_calc_harmony
 testPaintingAddresses = [
-    ["ExamplePaintings/fruits.jpg", 0],
-    ["ExamplePaintings/mountain.jpg", 0],
-    ["ExamplePaintings/test.jpg", 0],
-    ["ExamplePaintings/statue.jpg", 0],
-    ["ExamplePaintings/versailles.jpg", 0],
-    ["ExamplePaintings/monet.jpg", 0],
-    ["ExamplePaintings/garden.jpg", 0],
-    ["ExamplePaintings/circles.jpg", 0],
-    ["ExamplePaintings/olive_trees.jpg", 0],
-    ["ExamplePaintings/umbrellas.jpg", 0],
-    ["ExamplePaintings/realugly.jpg", 0],
-    ["ExamplePaintings/park.png", 0],
-    ["ExamplePaintings/bigcolor.jpg", 0],
-    ["ExamplePaintings/abstractugly.jpg", 0]
+    ["../ExamplePaintings/fruits.jpg", 0],
+    ["../ExamplePaintings/mountain.jpg", 0],
+    ["../ExamplePaintings/test.jpg", 0],
+    ["../ExamplePaintings/statue.jpg", 0],
+    ["../ExamplePaintings/versailles.jpg", 0],
+    ["../ExamplePaintings/monet.jpg", 0],
+    ["../ExamplePaintings/garden.jpg", 0],
+    ["../ExamplePaintings/circles.jpg", 0],
+    ["../ExamplePaintings/olive_trees.jpg", 0],
+    ["../ExamplePaintings/umbrellas.jpg", 0],
+    ["../ExamplePaintings/realugly.jpg", 0],
+    ["../ExamplePaintings/park.png", 0],
+    ["../ExamplePaintings/bigcolor.jpg", 0],
+    ["../ExamplePaintings/abstractugly.jpg", 0]
     ]
 
 """
@@ -32,6 +32,7 @@ testPaintingAddresses = [
     ["ExamplePaintings/garden.jpg", 0],
     ["ExamplePaintings/abstractugly.jpg", 0]
     ]
+"""
 
 
 
