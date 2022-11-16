@@ -68,11 +68,14 @@ def rfa(image_matrix):
         
     return (max_sal / sum_saliency)
 
+#TODO: figure out how to do itten color calculation
+"""
 def itten_color(image_matrix, eq_type):
     # various itten eqs
     # calculate standard deviation
     itten_color_scores = []
     return itten_color_scores
+"""
 
 def calcEmphasis(image_matrix):
     img = cv2.cvtColor(image_matrix, cv2.COLOR_HSV2BGR)
