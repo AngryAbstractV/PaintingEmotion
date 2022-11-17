@@ -102,7 +102,6 @@ def calcHarmony(hsvImg):
     img_wid = hsvImg.shape[1] # left to right
     img_len = hsvImg.shape[0] # up to down
 
-
     # anchor coords represented by x, y. x goes lengthwise, y goes widthwise
     for x in range(xy_init, (img_len - xy_init)):  #img_len - xy_init should be 4 less than the end of line
         for y in range(xy_init, (img_wid - xy_init)):
@@ -125,6 +124,7 @@ def calcHarmony(hsvImg):
     totalHarmony = totalHarmony / scalingValue
     totalHarmony = totalHarmony * 10
     totalHarmony -= .1
+
     return totalHarmony
 
 
