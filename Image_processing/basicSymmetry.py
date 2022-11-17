@@ -63,7 +63,7 @@ def calcBalance(img):
 
 if __name__=='__main__':
     
-    testImg = "ExamplePaintings/testImg.png"
+    testImg = "ExamplePaintings/test.jpg"
 
     img = cv2.imread(testImg)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
