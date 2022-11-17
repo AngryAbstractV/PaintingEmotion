@@ -6,10 +6,10 @@
 '''
 
 import numpy as np
-import cv2 as cv
+import cv2
 
 '''
-Steps
+Algorithm
 1. Convert image to GreyScale.
 2. For each direction: Vertical, Horizontal (Diagonals optional)
     a. Slice image in half.
@@ -29,8 +29,44 @@ Notes:
 0 = no symmetry
 '''
 
-def basicSymmetry(img):
+def bilateralSymmetry(img):
     
+    img_hSplit = np.split(img, 2, 0)
+    img_vSplit = np.split(img, 2, 1)
+
+    v_difference = abs(img_vSplit[0] - np.fliplr(img_vSplit[1]))
+    v_symmetry = np.average(v_difference)
+
+    h_difference = abs(img_hSplit[0] - np.flipud(img_hSplit[1]))
+    h_symmetry = np.average(h_difference)
     
+    return (v_symmetry, h_symmetry)
+
+def calcBalance(img):
+    img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = img/255
+
+    symmetry = bilateralSymmetry(img)
+
+    #max value of either horizontal symmetry vs vertical symmetry
+
+    if (symmetry[0] > symmetry[1]):
+        val_min= symmetry[1] 
+    else:
+        val_min = symmetry[0] 
+
+    #average of both horizontal and vertical symmetry
+    val_average = np.average(symmetry)
+
+    return ((1 - val_min), (1- val_average))
+
+if __name__=='__main__':
     
-    return 1
+    testImg = "ExamplePaintings/testImg.png"
+
+    img = cv2.imread(testImg)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    val = calcBalance(img)
+
+    print(val)
