@@ -27,46 +27,24 @@ def calc_pixel_change(matrix):
 def gradation_score(image, kernel):
     m, n = kernel.shape
     y, x, z = image.shape
-    horizontal_score = 0
-    vertical_score = 0
-    # Iteration of all pixels in the image
-    # Loops are in range to not fall out of bounds
-    optimized = time.time()
-    for i in range(y - n + 1):
-        for j in range(x - n + 1):
-            if j % 3 == 0 and i % 3 == 0:
-                current_matrix = kernel * (image[i:i + m, j:j + n])  # Copy current pixels onto 3x3 matrix
-                horizontal_score += np.abs(np.diff(current_matrix[0, 0, :], n=2))[0]
-                vertical_score += np.abs(np.diff(current_matrix[:, 0, 0], n=2))[0]
-                horizontal_score += np.abs(np.diff(current_matrix[1, 1, :], n=2))[0]
-                vertical_score += np.abs(np.diff(current_matrix[:, 1, 1], n=2))[0]
-                horizontal_score += np.abs(np.diff(current_matrix[2, 2, :], n=2))[0]
-                vertical_score += np.abs(np.diff(current_matrix[:, 2, 2], n=2))[0]
-    print(time.time() - optimized)
-    print(vertical_score)
-    print(horizontal_score)
-    # newTotal = vertical_score + horizontal_score
-    # vertical_score = 0
-    # horizontal_score = 0
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # old = time.time()
-    # for i in range(y - n + 1):
-    #    for j in range(x - n + 1):
-    #        current_matrix = kernel * (image[i:i + m, j:j + n])  # Copy current pixels onto 3x3 matrix
-    #        horizontal_score += np.abs(np.diff(current_matrix[0, 0, :], n=2))[0]
-    #        vertical_score += np.abs(np.diff(current_matrix[:, 0, 0], n=2))[0]
-    #        horizontal_score += np.abs(np.diff(current_matrix[1, 1, :], n=2))[0]
-    #        vertical_score += np.abs(np.diff(current_matrix[:, 1, 1], n=2))[0]
-    #        horizontal_score += np.abs(np.diff(current_matrix[2, 2, :], n=2))[0]
-    #        vertical_score += np.abs(np.diff(current_matrix[:, 2, 2], n=2))[0]
+    # the gradient magnitude images are now of the floating point data
+    # type, so we need to take care to convert them back a to unsigned
+    # 8-bit integer representation so other OpenCV functions can operate
+    # on them and visualize them
+    gX = cv2.Sobel(image, cv2.CV_64F, 1, 0)
+    gY = cv2.Sobel(image, cv2.CV_64F, 0, 1)
+    # compute the gradient magnitude and orientation
+    magnitude = np.sqrt((gX ** 2) + (gY ** 2))
+    og = cv2.sumElems(magnitude)
+    og = og[0]
 
-    # print(time.time() - old)
-    # print(vertical_score)
-    # print(horizontal_score)
-    # oldTotal = vertical_score + horizontal_score
-    # print(np.diff([newTotal, oldTotal]))
+    while (og >= 100.0):
+        og = og % 100
 
-    return (vertical_score // (x * y)) + (horizontal_score // (x * y))  # Dividing by size to make it a smaller score
+
+    return 100 - og
 
 
 def calcGradation(hsvImg):
@@ -74,6 +52,6 @@ def calcGradation(hsvImg):
 
 
 # Set up this way to run just this file and not the main image processing stuff
-img = cv2.imread('../ExamplePaintings/statue.jpg')
+img = cv2.imread('../ExamplePaintings/gradation.png')
 hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-calcGradation(hsv_img)
+calcGradation(img)
