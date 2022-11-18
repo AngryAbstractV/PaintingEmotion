@@ -38,6 +38,7 @@ def genAvgSacadeLength(saliencyMap, mapLength):
         distance = math.sqrt(abs((salientList[x][0] - salientList[x+1][0]) ** 2 + (salientList[x][1] - salientList[x+1][1]) ** 2))
         if distance > 20:
             sacades += distance
+        else:
             newLen = newLen - 1
 
     return (sacades / newLen)
@@ -56,5 +57,8 @@ def calcMovement(img):
     maxAvgLen = (math.sqrt((img.shape[0]) ** 2 + (img.shape[1]) ** 2)) / 2
 
     movement = ((avgSacadeLength / maxAvgLen))
+
+    if movement > 1.0:
+        movement = 1.0
 
     return movement
