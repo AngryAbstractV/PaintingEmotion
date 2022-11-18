@@ -1,9 +1,12 @@
 import cv2
 import numpy as np
-# from balance import calcBalance
-# from emphasis import calcEmphasis
+
+#from balance import calcBalance
+#from emphasis import calcEmphasis
+#from movement import calcMovement
 from Image_processing.harmony import calcHarmony
 from Image_processing.variety import calcVariety
+from Image_processing.gradation import calcGradation
 
 
 # from gradation import calcGradation
@@ -77,8 +80,9 @@ class Painting:
         # call variety
         self.properties_list[3] = calcVariety(self.hsv_img)
 
-        # call gradation
-        # self.properties_list[4] = calcGradation(self.hsv_img)
+        #call gradation
+        self.properties_list[4] = calcGradation(self.hsv_img)
+
 
         # call movement
         # self.properties_list[5] = calcMovement(self.hsv_img)
