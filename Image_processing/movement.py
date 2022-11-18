@@ -7,42 +7,14 @@ import cv2
 #SATURATION = 0 - 255
 #VALUE = 0 - 255
 
-def resize(img):
-    pix_threshold = 500
-    img_wid = img.shape[1]
-    img_len = img.shape[0]
-
-    new_wid = 0
-    new_len = 0
-
-    if img_wid > pix_threshold or img_len > pix_threshold:
-        # find out which is bigger
-        if img_wid > img_len:
-            new_wid = pix_threshold
-            scale = (new_wid * 100) // img_wid
-            new_len = (img_len * scale) // 100
-        elif img_len > img_wid:
-            new_len = pix_threshold
-            scale = (new_len * 100) // img_len
-            new_wid = (img_wid * scale) // 100
-        else:
-            # wid and len are equal
-            new_wid = pix_threshold
-            new_len = pix_threshold
-    else:
-        return img
-
-    dim = (new_wid, new_len)
-    resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
-    return resized
-
-
 def displayPath(img, salientList, mapLength):
     for x in range(mapLength - 1):
+        start = salientList[x]
+        end = salientList[x+1]
         # draw a line starting at [x] and ending at [x+1]
-        # if x % 9 == 0:
-        #     img = cv2.line(img, salientList[x], salientList[x+1], (0, 255, 0), 1)
-        img = cv2.line(img, salientList[x], salientList[x+1], (0, 255, 0), 1)
+        if x % 9 == 0:
+            img = cv2.line(img,(start[1], start[0]), (end[1], end[0]), (0, 255, 0), 1)
+        # img = cv2.line(img, (start[1], start[0]), (end[1], end[0]), (0, 255, 0), 1)
     return img
 
 def genSaliencyMap(image):
@@ -55,59 +27,34 @@ def genSaliencyMap(image):
 
 
 def genAvgSacadeLength(saliencyMap, mapLength):
-    #create list (of length maplength) of most salient points salientList
-    #of form [[x,y], [x,y], [x,y], ...]
-
     salientList = np.argpartition(saliencyMap, saliencyMap.size - mapLength, axis=None)[-mapLength:]
     salientList = np.column_stack(np.unravel_index(salientList, saliencyMap.shape))
 
     sacades = 0
-    #for x in range(mapLength-1):
-    # √[(x₂ - x₁)² + (y₂ - y₁)²] 
-    #distance = sqrt(( salientList[x][0]- salientList[x+1][0])² + (salientList[x][1]- salientList[x+1][1])²)
-    #sacades += distance
+    newLen = mapLength - 1
 
     for x in range(mapLength - 1):
         # √[(x₂ - x₁)² + (y₂ - y₁)²] 
-        distance = math.sqrt(abs((salientList[x][0] - salientList[x+1][0]) ** 2 + (salientList[x][1] - salientList[x+1][1] ** 2)))
-        sacades += distance
+        distance = math.sqrt(abs((salientList[x][0] - salientList[x+1][0]) ** 2 + (salientList[x][1] - salientList[x+1][1]) ** 2))
+        if distance > 20:
+            sacades += distance
+            newLen = newLen - 1
 
-    return ((sacades / (mapLength - 1)), salientList)
+    return (sacades / newLen)
 
 
 def calcMovement(img):
+    img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
     salienceMap = genSaliencyMap(img)
-
-    cv2.imshow("Image", salienceMap)
-    cv2.imshow("Image2", img)
-    cv2.waitKey(0)
-
     standardDev = np.std(salienceMap)
     maplength = int(standardDev * salienceMap.shape[0] * salienceMap.shape[1])
 
-    print("map length: " + str(maplength))
-    print("std: " + str(standardDev))
+    if standardDev == 0:
+        return 0
 
-    (avgSacadeLength, salientList) = genAvgSacadeLength(salienceMap, maplength)
+    avgSacadeLength = genAvgSacadeLength(salienceMap, maplength)
+    maxAvgLen = (math.sqrt((img.shape[0]) ** 2 + (img.shape[1]) ** 2)) / 2
 
-    saliency = standardDev * avgSacadeLength #some normalized value combining these
+    movement = ((avgSacadeLength / maxAvgLen))
 
-
-
-    img = displayPath(img, salientList, maplength)
-    cv2.imshow("Image3", img)
-    cv2.waitKey(0)
-
-    return saliency
-
-
-
-# -------------------------------
-
-filename = 'images/umbrellas.jpg'
-img = cv2.imread(filename, 1)
-img = resize(img)
-
-print(filename)
-print("movement: " + str(calcMovement(img)))
-
+    return movement
