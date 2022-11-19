@@ -69,19 +69,20 @@ def rfa(image_matrix):
     return (max_sal / sum_saliency)
 
 def itten_color(image_matrix, eq_type):
-    #various itten eqs
+    # various itten eqs
     # calculate standard deviation
     itten_color_scores = []
     return itten_color_scores
 
 def calcEmphasis(image_matrix):
-    #do we need to do anything to the image first?
+    img = cv2.cvtColor(image_matrix, cv2.COLOR_HSV2BGR)
 
-    #calculate itten color scores
+    # calculate itten color scores
 
-    #figure out RFA of image based on mask eq type combine those different RFAs together somehow?
+    # calculate RFA
+    rfaScore = rfa(img)
 
-    #calulate emphasis by combinding itten and RFA
-    emphasis_score = 0
+    # calulate emphasis by combining itten and RFA
+    emphasis_score = rfaScore
     return emphasis_score 
 
