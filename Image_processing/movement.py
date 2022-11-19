@@ -62,3 +62,5 @@ def calcMovement(img):
         movement = 1.0
 
     return movement
+
+    return movement
