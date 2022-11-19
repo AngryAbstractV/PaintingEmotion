@@ -49,21 +49,15 @@ def calcBalance(img):
 
     symmetry = bilateralSymmetry(img)
 
-    #max value of either horizontal symmetry vs vertical symmetry
-
-    if (symmetry[0] > symmetry[1]):
-        val_min= symmetry[1] 
-    else:
-        val_min = symmetry[0] 
-
     #average of both horizontal and vertical symmetry
     val_average = np.average(symmetry)
 
-    return ((1 - val_min), (1- val_average))
+    return ((1- val_average))
 
+#Main method for testing
 if __name__=='__main__':
     
-    testImg = "ExamplePaintings/testImg.png"
+    testImg = "ExamplePaintings/test.jpg"
 
     img = cv2.imread(testImg)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
