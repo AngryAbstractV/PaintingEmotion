@@ -54,7 +54,7 @@ def calcBalance(img):
 
     return ((1- val_average))
 
-#Main method for testing
+'''Main method for testing
 if __name__=='__main__':
     
     testImg = "ExamplePaintings/test.jpg"
@@ -64,3 +64,4 @@ if __name__=='__main__':
     val = calcBalance(img)
 
     print(val)
+'''
