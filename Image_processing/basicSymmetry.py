@@ -31,6 +31,11 @@ Notes:
 
 def bilateralSymmetry(img):
     
+    if (img.shape[0] % 2 == 1):
+        img.resize(((img.shape[0] + 1), img.shape[1]),refcheck=False)
+    if (img.shape[1] % 2 == 1):
+        img.resize((img.shape[0], (img.shape[1] + 1)), refcheck=False)
+
     img_hSplit = np.split(img, 2, 0)
     img_vSplit = np.split(img, 2, 1)
 
@@ -53,15 +58,16 @@ def calcBalance(img):
     val_average = np.average(symmetry)
 
     return ((1- val_average))
-
-'''Main method for testing
+    
+"""
+#Main method for testing
 if __name__=='__main__':
     
-    testImg = "ExamplePaintings/test.jpg"
+    testImg = "ExamplePaintings/10--frantisek-kupka_the-gallien-girl-1910.png"
 
     img = cv2.imread(testImg)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     val = calcBalance(img)
 
     print(val)
-'''
+"""
