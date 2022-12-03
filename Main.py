@@ -10,7 +10,7 @@ from tkinter import *
 #from tkinter import ttk
 from tkinter.filedialog import askopenfilename
 from PIL import ImageTk, Image
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 
 class_names = ['amusement', 'anger', 'awe', 'contentment', 'disgust', 'excitement', 'fear', 'sadness']
