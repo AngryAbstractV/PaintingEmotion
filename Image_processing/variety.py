@@ -56,4 +56,6 @@ def calcVariety(img):
     #img = cv.cvtColor(img, cv.COLOR_HSV2RGB)
     count = get_hist(img)
     total = np.sum(count)
+
     return calcScore(count, total)
+
